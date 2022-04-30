@@ -1,100 +1,94 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './../App.css'
 import {Form, Button} from  'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Pagination from './Pagination.tsx';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { findCharacters, fetchCharacters, maleCheckbox, femaleCheckbox, aliveCheckbox, deadCheckbox,unknownCheckbox } from '../store/action.ts';
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 
-const RickAndMorty = ({data, loading}) => {
-  const characters = useSelector(state => state.characters.characters);
+export const RickAndMorty = ({data, loading}) => {
   const [inputText, setInputText] = useState('');
-  const [selectedPersons, setSelectedPersons] = useState(characters);
+  const [selectedPersons, setSelectedPersons] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(6);
   
-
-
-  const dispatch = useDispatch(); 
-
-  useEffect(() => {
-    setSelectedPersons(characters)
-  }, [characters])
-
-  console.log(characters);  
-  
+  const [maleCheckbox, setMaleCheckbox] = useState(false);
+  const [femaleCheckbox, setFemaleCheckbox] = useState(false);
+  const [aliveCheckbox, setAliveCheckbox] = useState(false);
+  const [deadCheckbox, setDeadCheckbox] = useState(false);
+  const [unknownCheckbox, setUnknownCheckbox] = useState(false);
 
   const searchHandler = () => {
-    if (inputText === ""){
-        fetch('https://rickandmortyapi.com/api/character').then(response => {
-          if (response.ok){
-            return response.json();
-          }
-          throw response;
-          }).then(data => {
-            dispatch(fetchCharacters(data.results))
-          })
-    }else{
-      dispatch(findCharacters(inputText))
-    }
+    setSelectedPersons(data.filter(item => item.name.toLowerCase().includes(inputText.toLowerCase())));
   }
 
-
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage; 
   const currentPosts = selectedPersons.slice(indexOfFirstPost, indexOfLastPost) 
 
-  const checkboxHandler = (type) => {
+  const checkboxFilter = (type) => {
     if (type === "male"){
-      fetch('https://rickandmortyapi.com/api/character').then(response => {
-          if (response.ok){
-            return response.json();
-          }
-          throw response;
-          }).then(data => {
-            dispatch(maleCheckbox(data.results))
-          })
+      setMaleCheckbox(!maleCheckbox);
+      setFemaleCheckbox(false);
+      setAliveCheckbox(false);
+      setDeadCheckbox(false);
+      setUnknownCheckbox(false);
+      if (!maleCheckbox){
+        setSelectedPersons(data.filter(item => item.gender === 'Male'))
+      }else{
+        setSelectedPersons(data)
+      }
     }else if (type === "female"){
-      fetch('https://rickandmortyapi.com/api/character').then(response => {
-          if (response.ok){
-            return response.json();
-          }
-          throw response;
-          }).then(data => {
-            dispatch(femaleCheckbox(data.results))
-          })
+      setFemaleCheckbox(!femaleCheckbox);
+      setMaleCheckbox(false);
+      setAliveCheckbox(false);
+      setDeadCheckbox(false);
+      setUnknownCheckbox(false);
+      if (!femaleCheckbox){
+        setSelectedPersons(data.filter(item => item.gender === 'Female'))
+      }else{
+        setSelectedPersons(data)
+      }
     }else if (type === "alive"){
-      fetch('https://rickandmortyapi.com/api/character').then(response => {
-        if (response.ok){
-          return response.json();
-        }
-        throw response;
-        }).then(data => {
-          dispatch(aliveCheckbox(data.results))
-        })
+      setAliveCheckbox(!aliveCheckbox);
+      setDeadCheckbox(false);
+      setUnknownCheckbox(false);
+      setMaleCheckbox(false);
+      setFemaleCheckbox(false); 
+
+      if (!aliveCheckbox){
+        setSelectedPersons(data.filter(item => item.status === 'Alive'));
+      }else{
+        setSelectedPersons(data)
+      }
     }else if (type === "dead"){
-      fetch('https://rickandmortyapi.com/api/character').then(response => {
-        if (response.ok){
-          return response.json();
-        }
-        throw response;
-        }).then(data => {
-          dispatch(deadCheckbox(data.results))
-        })
+      setDeadCheckbox(!deadCheckbox);
+      setUnknownCheckbox(false);
+      setMaleCheckbox(false);
+      setFemaleCheckbox(false); 
+      setAliveCheckbox(false);
+
+      if (!deadCheckbox){
+        setSelectedPersons(data.filter(item => item.status === 'Dead'));
+      }else{
+        setSelectedPersons(data)
+      }
 
     }else if (type === "unknown"){
-      fetch('https://rickandmortyapi.com/api/character').then(response => {
-        if (response.ok){
-          return response.json();
-        }
-        throw response;
-        }).then(data => {
-          dispatch(unknownCheckbox(data.results))
-        })
+      setUnknownCheckbox(!unknownCheckbox);
+      setDeadCheckbox(false);
+      setMaleCheckbox(false);
+      setFemaleCheckbox(false); 
+      setAliveCheckbox(false);
 
+
+      if (!unknownCheckbox){
+        setSelectedPersons(data.filter(item => item.status === 'unknown'));
+      }else{
+        setSelectedPersons(data)
+      }
     }
   }
 
@@ -104,8 +98,8 @@ const RickAndMorty = ({data, loading}) => {
   
   return (
     <div className="films">
-      <>
-        <Navbar bg="dark" variant="dark">
+     <>
+    <Navbar bg="dark" variant="dark">
     <Container>
       <Navbar.Brand href="">
         <img
@@ -115,11 +109,11 @@ const RickAndMorty = ({data, loading}) => {
           height="60"
           className="d-inline-block align-top"
         />{' '}
-   
-      </Navbar.Brand>
+       </Navbar.Brand>
     </Container>
   </Navbar>
 </><br />
+
       <div className="search mb-3 d-flex" style={{width:500, margin:'0 auto'}}>
         <Form.Control type="text" placeholder="Search for characters" className="me-4" value={inputText} onChange={(e) => setInputText(e.target.value)} />
         <Button variant="primary" type="submit" onClick={searchHandler}>
@@ -129,18 +123,18 @@ const RickAndMorty = ({data, loading}) => {
       <div className="filters d-flex justify-content-between mb-3">
           <div className="filter__gender">
             <p>Filter by gender</p> 
-            <input type="checkbox" id="male" name="male" checked={maleCheckbox} onChange={() => checkboxHandler("male")} />
+            <input type="radio" id="male" name="male" checked={maleCheckbox} onChange={() => checkboxFilter("male")} />
             <label htmlFor="male" className="me-3">Male</label>
-            <input type="checkbox" id="Female" name="Female" checked={femaleCheckbox} onChange={() => checkboxHandler("female")}/>
+            <input type="radio" id="Female" name="Female" checked={femaleCheckbox} onChange={() => checkboxFilter("female")}/>
             <label htmlFor="Female">Female</label>
           </div>
           <div className="filter__status">
             <p>Filter by status</p>
-            <input type="checkbox" id="alive" name="alive" checked={aliveCheckbox} onChange={() => checkboxHandler("alive")}/>
+            <input type="radio" id="alive" name="alive" checked={aliveCheckbox} onChange={() => checkboxFilter("alive")}/>
             <label htmlFor="alive" className="me-3">Alive</label>
-            <input type="checkbox" id="dead" name="dead" checked={deadCheckbox} onChange={() => checkboxHandler("dead")}/>
+            <input type="radio" id="dead" name="dead" checked={deadCheckbox} onChange={() => checkboxFilter("dead")}/>
             <label htmlFor="dead" className="me-3">Dead</label>
-            <input type="checkbox" id="unknown" name="unknown" checked={unknownCheckbox} onChange={() => checkboxHandler("unknown")}/>
+            <input type="radio" id="unknown" name="unknown" checked={unknownCheckbox} onChange={() => checkboxFilter("unknown")}/>
             <label htmlFor="unknown">Unknown</label>
           </div>
         </div>
