@@ -3,10 +3,12 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Montserrat Alternates", sans-serif;
+  
 }
 h1 {
   text-align: center;
   padding: 20px 0;
+  
 }
 h1 span {
   color: rgb(52, 52, 240) !important;

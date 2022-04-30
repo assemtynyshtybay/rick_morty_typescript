@@ -6,6 +6,8 @@ import Pagination from './Pagination.tsx';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findCharacters, fetchCharacters, maleCheckbox, femaleCheckbox, aliveCheckbox, deadCheckbox,unknownCheckbox } from '../store/action.ts';
+import Navbar from 'react-bootstrap/Navbar'
+import Container from 'react-bootstrap/Container'
 
 const RickAndMorty = ({data, loading}) => {
   const characters = useSelector(state => state.characters.characters);
@@ -102,7 +104,22 @@ const RickAndMorty = ({data, loading}) => {
   
   return (
     <div className="films">
-      <h1>Rick & Morty</h1>
+      <>
+        <Navbar bg="dark" variant="dark">
+    <Container>
+      <Navbar.Brand href="">
+        <img
+          alt=""
+          src="https://upload.wikimedia.org/wikipedia/ru/c/c8/Rick_and_Morty_logo.png"
+          width="150"
+          height="60"
+          className="d-inline-block align-top"
+        />{' '}
+   
+      </Navbar.Brand>
+    </Container>
+  </Navbar>
+</><br />
       <div className="search mb-3 d-flex" style={{width:500, margin:'0 auto'}}>
         <Form.Control type="text" placeholder="Search for characters" className="me-4" value={inputText} onChange={(e) => setInputText(e.target.value)} />
         <Button variant="primary" type="submit" onClick={searchHandler}>
