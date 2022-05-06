@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import './../App.css'
-import Navbar from 'react-bootstrap/Navbar'
-import Container from 'react-bootstrap/Container'
+import {Navbar} from 'react-bootstrap'
+import {Container} from 'react-bootstrap'
 
 const Card = ({data}) => {
     const {id} = useParams();
-    const item = data[id-1];
+    const item = data[+id-1];
   return (
       <>
       

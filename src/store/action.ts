@@ -1,51 +1,55 @@
-import {SEARCH_CHARACTERS, FETCH_CHARACTERS, MALE_CHECKBOX, FEMALE_CHECKBOX, ALIVE_CHECKBOX,DEAD_CHECKBOX,UNKNOWN_CHECKBOX } from './types.ts'  
+import {SEARCH_CHARACTERS, FETCH_CHARACTERS, MALE_CHECKBOX, FEMALE_CHECKBOX, ALIVE_CHECKBOX,DEAD_CHECKBOX,UNKNOWN_CHECKBOX } from './types'  
 
-
-export function fetchCharacters(data){
-    return {
-        type:FETCH_CHARACTERS,
-        payload:data
-    }
+import axios from 'axios'
+import { Dispatch } from 'redux'
+import { Characters, CharsAction } from './reducers/fetchData'
+export enum CharActionType {
+  SEARCH_CHARACTERS = "SEARCH_CHARACTERS",
+  FETCH_CHARS_SUCCESS = "SUCCESS_CHARS",
+  FETCH_CHARACTERS = "FETCH_CHARACTERS",
+  MALE_CHECKBOX= "MALE_CHECKBOX",
+  FEMALE_CHECKBOX="FEMALE_CHECKBOX",
+  ALIVE_CHECKBOX = "ALIVE_CHECKBOX",
+  DEAD_CHECKBOX = "DEAD_CHECKBOX",
+  UNKNOWN_CHECKBOX = "UNKNOWN_CHECKBOX"
 }
 
-export function findCharacters(text){
-    return {
-        type: SEARCH_CHARACTERS,
-        payload:text
-    }
+export type fetchCharacters ={
+    type: CharActionType.FETCH_CHARACTERS
 }
 
-export function maleCheckbox(data){
-    console.log(data)
-    return {
-        type: MALE_CHECKBOX,
-        payload:data
-    }
+export type findCharacters = {
+   type: CharActionType.SEARCH_CHARACTERS,
+   payload: string
+}
+export type FetchCharSuccessAction = {
+  type: CharActionType.FETCH_CHARS_SUCCESS,
+  payload: CharsAction
+}
+export type maleCheckbox = {
+    type: CharActionType.MALE_CHECKBOX,
+    payload: string
+    
+}
+export type femaleCheckbox = {
+  type: CharActionType.FEMALE_CHECKBOX,
+  payload: string
+  
+}
+export type aliveCheckbox = {
+  type: CharActionType.ALIVE_CHECKBOX,
+  payload: string
+  
 }
 
-export function femaleCheckbox(data){
-    return {
-        type: FEMALE_CHECKBOX,
-        payload:data
-    }
+export type deadCheckbox = {
+  type: CharActionType.DEAD_CHECKBOX,
+  payload: string
+  
+}
+export type unknownCheckbox = {
+  type: CharActionType.UNKNOWN_CHECKBOX,
+  payload: string
 }
 
-export function aliveCheckbox(data){
-    return {
-        type: ALIVE_CHECKBOX,
-        payload:data
-    }
-}
-
-export function deadCheckbox(data){
-    return {
-        type: DEAD_CHECKBOX,
-        payload:data
-    }
-}
-export function unknownCheckbox(data){
-    return {
-        type:UNKNOWN_CHECKBOX,
-        payload:data
-    }
-}
+export type CharAction =fetchCharacters | findCharacters | maleCheckbox | femaleCheckbox | aliveCheckbox | deadCheckbox | unknownCheckbox | FetchCharSuccessAction

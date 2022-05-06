@@ -1,35 +1,42 @@
-import React, {useState, useEffect} from 'react'; 
+import React, { useEffect} from 'react'; 
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Card from './components/Card.tsx';
-import RickAndMorty from './components/RickAndMorty.tsx'
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchCharacters } from './store/action.ts';
+import Card from './components/Card';
+import RickAndMorty from './components/RickAndMorty'
+// import { useDispatch } from 'react-redux';
+import { useTypedSelector } from './hooks/useTypedSelector';
+import { useCharActions } from './hooks/actionCreator';
 
 const App = () => {
-  const dispatch = useDispatch();
-  const characters = useSelector(state => state.characters.characters);
-  const loading = useSelector(state =>  state.characters.isLoading)
+  console.log('start')
+  // const {characters, isLoading} = useTypedSelector((state) => state.characters);
+  // // const characters = useSelector(state => state.characters.characters);
+  // // const loading = useSelector(state =>  state.characters.isLoading)
+  // const { fetchCharacters } = useCharActions();
 
-  console.log(characters)
+  // console.log(characters)
 
-  useEffect(() => {
-    fetch('https://rickandmortyapi.com/api/character').then(response => {
-      if (response.ok){
-          return response.json();
-      }
-      throw response;
-      }).then(data => {
-        dispatch(fetchCharacters(data.results))
-      })
-  }, [])
+  // useEffect(() => {
+  //   fetchCharacters()
+  //   // fetch('https://rickandmortyapi.com/api/character').then(response => {
+  //   //   if (response.ok){
+  //   //       return response.json();
+  //   //   }
+  //   //   throw response;
+  //   //   }).then(data => {
+  //   //     dispatch(fetchCharacters(data.results))
+  //   //     console.log("data", data)
+  //   //   })
+
+  // }, [fetchCharacters])
 
   return (
     <div className="App">
-        <Routes>
-          {loading ? <Route path="/" exact element={<RickAndMorty data={characters} loading={loading}/> } />  : "" }
+      <span>sdfgh</span>
+        {/* <Routes>
+          {isLoading ? <Route path="/" element={<RickAndMorty data={characters} loading={isLoading}/> } />  : "" }
           <Route path="/card/:id" element={<Card data={characters} />} />
-        </Routes>
+        </Routes> */}
     </div>  
   );
 }

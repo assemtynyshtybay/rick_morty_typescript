@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import './../App.css'
 import {Form, Button} from  'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Pagination from './Pagination.tsx';
+import Pagination from './Pagination';
 import { Link } from 'react-router-dom';
-import Navbar from 'react-bootstrap/Navbar'
-import Container from 'react-bootstrap/Container'
+import {Navbar} from 'react-bootstrap'
+import {Container} from 'react-bootstrap'
 
 export const RickAndMorty = ({data, loading}) => {
   const [inputText, setInputText] = useState('');
@@ -103,7 +103,7 @@ export const RickAndMorty = ({data, loading}) => {
     <Container>
       <Navbar.Brand href="">
         <img
-          alt=""
+          alt="avatar"
           src="https://upload.wikimedia.org/wikipedia/ru/c/c8/Rick_and_Morty_logo.png"
           width="150"
           height="60"
